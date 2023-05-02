@@ -1,3 +1,4 @@
+import { Button } from 'antd'
 import { FC } from 'react'
 
 const Home: FC = () => {
@@ -5,7 +6,7 @@ const Home: FC = () => {
     <div>
       <p>home</p>
       <div>
-        <button>登录</button>
+        <Button>登录</Button>
       </div>
     </div>
   )
