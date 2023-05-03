@@ -1,7 +1,9 @@
 import { FC, useState } from 'react'
 import styles from './common.module.scss'
 import QuestionCard from '../../components/QuestionCard'
-
+import { Typography } from 'antd'
+import { useTitle } from 'ahooks'
+const { Title } = Typography
 const rawQuestionList = [
   {
     _id: 'q1',
@@ -37,12 +39,13 @@ const rawQuestionList = [
   },
 ]
 const List: FC = () => {
+  useTitle('小慕问卷 - 我的问卷')
   const [questionList, setQuestionList] = useState(rawQuestionList)
   return (
     <>
       <div className={styles.header}>
         <div className={styles.left}>
-          <h3>我的问卷</h3>
+          <Title level={3}>我的问卷</Title>
         </div>
         <div className={styles.right}>(搜索)</div>
       </div>
