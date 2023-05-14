@@ -5,6 +5,7 @@ import styles from './common.module.scss'
 import { ColumnsType } from 'antd/es/table'
 import { ExclamationCircleOutlined } from '@ant-design/icons'
 import ListSearch from '../../components/ListSearch'
+import useLoadQuestionListData from '../../hooks/useLoadQuestionListData'
 const { Title } = Typography
 const { confirm } = Modal
 
@@ -37,10 +38,13 @@ const rawQuestionList = [
 
 const Trash: FC = () => {
   useTitle('小慕问卷 - 回收站')
-  const [questionList, setQuestionList] = useState(rawQuestionList)
+
+  const { data = {}, loading } = useLoadQuestionListData({ isDeleted: true })
+  const { list = [], total = 0 } = data
+
   // 记录选中的 id
   const [selectedIds, setSelectedIds] = useState<string[]>([])
-  const tableColumns: ColumnsType<(typeof questionList)[0]> = [
+  const tableColumns: ColumnsType<(typeof list)[0]> = [
     {
       title: '标题',
       dataIndex: 'title',
@@ -85,7 +89,8 @@ const Trash: FC = () => {
       </div>
       <Table
         columns={tableColumns}
-        dataSource={questionList}
+        dataSource={list}
+        loading={loading}
         pagination={false}
         rowKey={p => p._id}
         rowSelection={{
@@ -108,9 +113,15 @@ const Trash: FC = () => {
         </div>
       </div>
       <div className={styles.content}>
-        {questionList.length === 0 && <Empty description="暂无数据" />}
-        {questionList.length > 0 && TableElement}
+        {loading && (
+          <div style={{ textAlign: 'center' }}>
+            <Spin />
+          </div>
+        )}
+        {!loading && list.length === 0 && <Empty description="暂无数据" />}
+        {list.length > 0 && TableElement}
       </div>
+      <div className={styles.footer}>分页 </div>
     </>
   )
 }
