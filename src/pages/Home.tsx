@@ -3,14 +3,14 @@ import { FC, useEffect } from 'react'
 import styles from './Home.module.scss'
 import { useNavigate } from 'react-router-dom'
 import { MANAGE_INDEX_PATHNAME } from '../router'
-import axios from 'axios'
 const { Title, Paragraph } = Typography
-// import '../_mock'
 const Home: FC = () => {
   useEffect(() => {
-    // axios.get('/api/test').then(data => {
-    //   console.log(data)
-    // })
+    fetch('/api/test')
+      .then(res => res.json())
+      .then(data => {
+        console.log(data)
+      })
   }, [])
   const navigate = useNavigate()
   return (
