@@ -1,9 +1,10 @@
 import { FC, useState } from 'react'
 import styles from './common.module.scss'
 import QuestionCard from '../../components/QuestionCard'
-import { Typography } from 'antd'
+import { Spin, Typography } from 'antd'
 import { useTitle } from 'ahooks'
 import ListSearch from '../../components/ListSearch'
+import useLoadQuestionListData from '../../hooks/useLoadQuestionListData'
 const { Title } = Typography
 const rawQuestionList = [
   {
@@ -41,7 +42,8 @@ const rawQuestionList = [
 ]
 const List: FC = () => {
   useTitle('小慕问卷 - 我的问卷')
-  const [questionList, setQuestionList] = useState(rawQuestionList)
+  const { data = {}, loading } = useLoadQuestionListData()
+  const { list = [], total = 0 } = data
   return (
     <>
       <div className={styles.header}>
@@ -53,10 +55,16 @@ const List: FC = () => {
         </div>
       </div>
       <div className={styles.content}>
-        {(questionList || []).map(q => {
-          const { _id } = q
-          return <QuestionCard key={_id} {...q} />
-        })}
+        {loading && (
+          <div style={{ textAlign: 'center' }}>
+            <Spin />
+          </div>
+        )}
+        {!loading &&
+          (list || []).map((q: any) => {
+            const { _id } = q
+            return <QuestionCard key={_id} {...q} />
+          })}
       </div>
       <div className={styles.footer}>loadMore 上滑加载更多</div>
     </>
